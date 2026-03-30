@@ -219,7 +219,6 @@
       transition: width 0.4s ease;
     }
 
-    /* End screen */
     .end-card {
       text-align: center;
       padding: 2.5rem 2rem;
@@ -284,7 +283,6 @@
     <p>Read the clue and pick the right plant!</p>
   </header>
 
-  <!-- Score bar -->
   <div class="score-bar">
     <div class="metric">
       <div class="metric-label">Score</div>
@@ -300,87 +298,32 @@
     </div>
   </div>
 
-  <!-- Progress bar -->
   <div class="progress-bar-wrap">
     <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
   </div>
 
-  <!-- Quiz area -->
   <div id="quiz-area" style="width:100%; max-width:560px; display:flex; flex-direction:column; align-items:center;"></div>
 
   <script>
-    // ── Plant list (the data abstraction) ──────────────────────────────────────
     var plants = [
-      {
-        name: "Sunflower",
-        emoji: "🌻",
-        clue: "I turn my face toward the sun and can grow over 10 feet tall. My seeds are a popular snack loved by birds and humans alike.",
-        options: ["Daisy", "Sunflower", "Tulip", "Marigold"]
-      },
-      {
-        name: "Cactus",
-        emoji: "🌵",
-        clue: "I store water in my thick stem and have sharp spines instead of leaves. I thrive in hot, dry desert climates.",
-        options: ["Aloe Vera", "Cactus", "Yucca", "Agave"]
-      },
-      {
-        name: "Rose",
-        emoji: "🌹",
-        clue: "Often called the queen of flowers. I have thorny stems and fragrant blooms used in perfumes and given as romantic gifts.",
-        options: ["Lily", "Rose", "Peony", "Hibiscus"]
-      },
-      {
-        name: "Bamboo",
-        emoji: "🎋",
-        clue: "I am actually a grass, not a tree. I am one of the fastest-growing plants on Earth and a favourite food of giant pandas.",
-        options: ["Bamboo", "Sugar Cane", "Reed", "Fern"]
-      },
-      {
-        name: "Venus Flytrap",
-        emoji: "🪴",
-        clue: "I am a carnivorous plant whose leaves snap shut to trap and digest insects. I am native to the swamps of North and South Carolina.",
-        options: ["Pitcher Plant", "Sundew", "Venus Flytrap", "Bladderwort"]
-      },
-      {
-        name: "Lavender",
-        emoji: "💜",
-        clue: "I am a purple flowering herb famous for my calming scent. I am used in aromatherapy, soaps, and cooking.",
-        options: ["Lavender", "Wisteria", "Sage", "Rosemary"]
-      },
-      {
-        name: "Oak Tree",
-        emoji: "🌳",
-        clue: "I produce acorns and can live for hundreds of years. My strong, dense wood is prized for furniture and flooring.",
-        options: ["Maple Tree", "Birch Tree", "Oak Tree", "Elm Tree"]
-      },
-      {
-        name: "Aloe Vera",
-        emoji: "🌿",
-        clue: "My thick fleshy leaves contain a clear gel used to soothe sunburns and skin irritations. I am a popular easy-care houseplant.",
-        options: ["Aloe Vera", "Cactus", "Jade Plant", "Snake Plant"]
-      },
-      {
-        name: "Cherry Blossom",
-        emoji: "🌸",
-        clue: "My delicate pink blooms last only a few weeks each spring. In Japan my flowering season is celebrated with festivals called Hanami.",
-        options: ["Magnolia", "Cherry Blossom", "Apple Blossom", "Dogwood"]
-      },
-      {
-        name: "Mint",
-        emoji: "🌱",
-        clue: "I am a fast-spreading herb with a cool, refreshing flavour. I am used in teas, toothpaste, chewing gum, and cocktails.",
-        options: ["Mint", "Basil", "Parsley", "Cilantro"]
-      }
+      { name: "Sunflower", emoji: "🌻", clue: "I turn my face toward the sun and can grow over 10 feet tall. My seeds are a popular snack loved by birds and humans alike.", options: ["Daisy", "Sunflower", "Tulip", "Marigold"] },
+      { name: "Cactus", emoji: "🌵", clue: "I store water in my thick stem and have sharp spines instead of leaves. I thrive in hot, dry desert climates.", options: ["Aloe Vera", "Cactus", "Yucca", "Agave"] },
+      { name: "Rose", emoji: "🌹", clue: "Often called the queen of flowers. I have thorny stems and fragrant blooms used in perfumes and given as romantic gifts.", options: ["Lily", "Rose", "Peony", "Hibiscus"] },
+      { name: "Bamboo", emoji: "🎋", clue: "I am actually a grass, not a tree. I am one of the fastest-growing plants on Earth and a favourite food of giant pandas.", options: ["Bamboo", "Sugar Cane", "Reed", "Fern"] },
+      { name: "Venus Flytrap", emoji: "🪴", clue: "I am a carnivorous plant whose leaves snap shut to trap and digest insects. I am native to the swamps of North and South Carolina.", options: ["Pitcher Plant", "Sundew", "Venus Flytrap", "Bladderwort"] },
+      { name: "Lavender", emoji: "💜", clue: "I am a purple flowering herb famous for my calming scent. I am used in aromatherapy, soaps, and cooking.", options: ["Lavender", "Wisteria", "Sage", "Rosemary"] },
+      { name: "Oak Tree", emoji: "🌳", clue: "I produce acorns and can live for hundreds of years. My strong, dense wood is prized for furniture and flooring.", options: ["Maple Tree", "Birch Tree", "Oak Tree", "Elm Tree"] },
+      { name: "Aloe Vera", emoji: "🌿", clue: "My thick fleshy leaves contain a clear gel used to soothe sunburns and skin irritations. I am a popular easy-care houseplant.", options: ["Aloe Vera", "Cactus", "Jade Plant", "Snake Plant"] },
+      { name: "Cherry Blossom", emoji: "🌸", clue: "My delicate pink blooms last only a few weeks each spring. In Japan my flowering season is celebrated with festivals called Hanami.", options: ["Magnolia", "Cherry Blossom", "Apple Blossom", "Dogwood"] },
+      { name: "Mint", emoji: "🌱", clue: "I am a fast-spreading herb with a cool, refreshing flavour. I am used in teas, toothpaste, chewing gum, and cocktails.", options: ["Mint", "Basil", "Parsley", "Cilantro"] }
     ];
 
-    // ── Game state ─────────────────────────────────────────────────────────────
     var currentIndex = 0;
     var score = 0;
     var correctCount = 0;
     var answered = false;
     var shuffledPlants = shuffleArray(plants);
 
-    // ── Helper: shuffle an array ───────────────────────────────────────────────
     function shuffleArray(arr) {
       var copy = arr.slice();
       for (var i = copy.length - 1; i > 0; i--) {
@@ -392,9 +335,6 @@
       return copy;
     }
 
-    // ── Core function: check the player's guess ────────────────────────────────
-    // Parameters: guess (string), correctAnswer (string)
-    // Has a parameter, an if-statement, and iterates through option buttons
     function checkGuess(guess, correctAnswer) {
       if (answered) return;
       answered = true;
@@ -403,7 +343,6 @@
       var feedbackEl = document.getElementById('fb');
       var nextBtn = document.getElementById('next-btn');
 
-      // Iterate through all option buttons to apply correct/wrong styling
       for (var i = 0; i < buttons.length; i++) {
         buttons[i].disabled = true;
         if (buttons[i].textContent === correctAnswer) {
@@ -411,7 +350,6 @@
         }
       }
 
-      // Selection: check if guess matches correct answer
       if (guess === correctAnswer) {
         score += 10;
         correctCount += 1;
@@ -420,7 +358,6 @@
       } else {
         feedbackEl.textContent = "Not quite — it was " + correctAnswer + ".";
         feedbackEl.className = 'feedback wrong';
-        // Find the button the user clicked and mark it wrong
         for (var j = 0; j < buttons.length; j++) {
           if (buttons[j].textContent === guess) {
             buttons[j].classList.add('wrong');
@@ -428,14 +365,12 @@
         }
       }
 
-      // Update score display
       document.getElementById('score').textContent = score;
       document.getElementById('correct-count').textContent = correctCount;
 
       nextBtn.classList.remove('hidden');
     }
 
-    // ── Render the current question ────────────────────────────────────────────
     function renderQuestion() {
       answered = false;
       var area = document.getElementById('quiz-area');
@@ -448,67 +383,62 @@
       var plant = shuffledPlants[currentIndex];
       var shuffledOptions = shuffleArray(plant.options);
 
-      // Update header metrics
       document.getElementById('q-num').textContent = (currentIndex + 1) + "/" + shuffledPlants.length;
       document.getElementById('score').textContent = score;
       document.getElementById('correct-count').textContent = correctCount;
 
-      // Update progress bar
       var pct = (currentIndex / shuffledPlants.length) * 100;
       document.getElementById('progress-fill').style.width = pct + '%';
 
-      // Build options HTML
       var optionsHTML = '';
       for (var i = 0; i < shuffledOptions.length; i++) {
-        optionsHTML +=
-          '<button class="opt-btn" onclick="checkGuess(\'' +
-          shuffledOptions[i].replace(/'/g, "\\'") + "', '" +
-          plant.name.replace(/'/g, "\\'") + "'\">" +
-          shuffledOptions[i] + '</button>';
+        optionsHTML += `
+          <button class="opt-btn" onclick="checkGuess('${shuffledOptions[i]}', '${plant.name}')">
+            ${shuffledOptions[i]}
+          </button>
+        `;
       }
 
-      area.innerHTML =
-        '<div class="card" id="plant-card">' +
-          '<div class="plant-icon">' + plant.emoji + '</div>' +
-          '<div class="clue-label">What plant am I?</div>' +
-          '<div class="clue-text">' + plant.clue + '</div>' +
-        '</div>' +
-        '<div class="options-grid">' + optionsHTML + '</div>' +
-        '<div class="feedback" id="fb"></div>' +
-        '<button class="next-btn hidden" id="next-btn" onclick="nextQuestion()">' +
-          (currentIndex < shuffledPlants.length - 1 ? 'Next plant →' : 'See results →') +
-        '</button>';
+      area.innerHTML = `
+        <div class="card" id="plant-card">
+          <div class="plant-icon">${plant.emoji}</div>
+          <div class="clue-label">What plant am I?</div>
+          <div class="clue-text">${plant.clue}</div>
+        </div>
+        <div class="options-grid">${optionsHTML}</div>
+        <div class="feedback" id="fb"></div>
+        <button class="next-btn hidden" id="next-btn" onclick="nextQuestion()">
+          ${currentIndex < shuffledPlants.length - 1 ? 'Next plant →' : 'See results →'}
+        </button>
+      `;
     }
 
-    // ── Advance to next question ───────────────────────────────────────────────
     function nextQuestion() {
       currentIndex += 1;
       renderQuestion();
     }
 
-    // ── Render end screen ──────────────────────────────────────────────────────
     function renderEndScreen() {
       var pct = Math.round((correctCount / shuffledPlants.length) * 100);
       var msg = '';
-
-      if (pct >= 90) { msg = "You're a master botanist!"; }
-      else if (pct >= 70) { msg = "Great plant knowledge!"; }
-      else if (pct >= 50) { msg = "Not bad — keep growing!"; }
-      else { msg = "Time to hit the garden books."; }
+      if (pct >= 90) msg = "You're a master botanist!";
+      else if (pct >= 70) msg = "Great plant knowledge!";
+      else if (pct >= 50) msg = "Not bad — keep growing!";
+      else msg = "Time to hit the garden books.";
 
       document.getElementById('progress-fill').style.width = '100%';
 
-      document.getElementById('quiz-area').innerHTML =
-        '<div class="card end-card">' +
-          '<div class="end-trophy">🏆</div>' +
-          '<div class="end-score">' + correctCount + ' / ' + shuffledPlants.length + '</div>' +
-          '<div class="end-pct">' + pct + '% correct · ' + score + ' points</div>' +
-          '<div class="end-msg">' + msg + '</div>' +
-          '<button class="restart-btn" onclick="restartGame()">Play again</button>' +
-        '</div>';
+      document.getElementById('quiz-area').innerHTML = `
+        <div class="card end-card">
+          <div class="end-trophy">🏆</div>
+          <div class="end-score">${correctCount} / ${shuffledPlants.length}</div>
+          <div class="end-pct">${pct}% correct · ${score} points</div>
+          <div class="end-msg">${msg}</div>
+          <button class="restart-btn" onclick="restartGame()">Play again</button>
+        </div>
+      `;
     }
 
-    // ── Restart the game ───────────────────────────────────────────────────────
     function restartGame() {
       currentIndex = 0;
       score = 0;
@@ -517,7 +447,6 @@
       renderQuestion();
     }
 
-    // ── Start ──────────────────────────────────────────────────────────────────
     renderQuestion();
   </script>
 
