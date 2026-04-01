@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Plant Guesser</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -457,14 +459,10 @@
       var pct = (currentIndex / shuffledPlants.length) * 100;
       document.getElementById('progress-fill').style.width = pct + '%';
 
-      // Build options HTML
+      // Build options HTML using data attributes to avoid quote issues
       var optionsHTML = '';
       for (var i = 0; i < shuffledOptions.length; i++) {
-        optionsHTML +=
-          '<button class="opt-btn" onclick="checkGuess(\'' +
-          shuffledOptions[i].replace(/'/g, "\\'") + "', '" +
-          plant.name.replace(/'/g, "\\'") + "'\">" +
-          shuffledOptions[i] + '</button>';
+        optionsHTML += '<button class="opt-btn" data-guess="' + shuffledOptions[i] + '" data-answer="' + plant.name + '">' + shuffledOptions[i] + '</button>';
       }
 
       area.innerHTML =
@@ -475,9 +473,18 @@
         '</div>' +
         '<div class="options-grid">' + optionsHTML + '</div>' +
         '<div class="feedback" id="fb"></div>' +
-        '<button class="next-btn hidden" id="next-btn" onclick="nextQuestion()">' +
+        '<button class="next-btn hidden" id="next-btn">' +
           (currentIndex < shuffledPlants.length - 1 ? 'Next plant →' : 'See results →') +
         '</button>';
+
+      // Attach click listeners after DOM is updated
+      var optBtns = document.querySelectorAll('.opt-btn');
+      for (var k = 0; k < optBtns.length; k++) {
+        optBtns[k].addEventListener('click', function() {
+          checkGuess(this.getAttribute('data-guess'), this.getAttribute('data-answer'));
+        });
+      }
+      document.getElementById('next-btn').addEventListener('click', nextQuestion);
     }
 
     // ── Advance to next question ───────────────────────────────────────────────
@@ -518,7 +525,9 @@
     }
 
     // ── Start ──────────────────────────────────────────────────────────────────
-    renderQuestion();
+    document.addEventListener('DOMContentLoaded', function() {
+      renderQuestion();
+    });
   </script>
 
 </body>
